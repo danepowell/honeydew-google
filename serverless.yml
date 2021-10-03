@@ -1,0 +1,39 @@
+service: honeydew-google
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  stages:
+    - development
+    - staging
+    - production
+provider:
+  name: aws
+  runtime: nodejs10.x
+  timeout: 15
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "lambda:InvokeFunction"
+      Resource: "arn:aws:lambda:us-east-1::function:honeydew-google-${opt:stage}-fulfillment"
+  environment:
+    NODE_ENV: ${file(./.env.yml):${opt:stage}.NODE_ENV}
+    PARSE_APP_ID: ${file(./.env.yml):${opt:stage}.PARSE_APP_ID}
+    PARSE_JS_KEY: ${file(./.env.yml):${opt:stage}.PARSE_JS_KEY}
+    PARSE_MASTER_KEY: ${file(./.env.yml):${opt:stage}.PARSE_MASTER_KEY}
+    PARSE_SERVER_URL: https://api.danepowell.com/honeydew-${opt:stage}/parse
+functions:
+  fulfillment:
+    handler: index.fulfillment
+    events:
+      - http: POST /
+      - schedule:
+          name: honeydew-google-${opt:stage}-warmer
+          rate: rate(5 minutes)
+          enabled: true
+          input:
+            warmer: true
+            concurrency: 1
+
+plugins:
+  - serverless-stage-manager
+  - serverless-version-tracker

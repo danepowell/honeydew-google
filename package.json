@@ -1,0 +1,28 @@
+{
+  "name": "honeydew-google",
+  "version": "1.0.0",
+  "description": "Backend for Honeydew Google Assistant integration.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/danepowell/honeydew-google.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/danepowell/honeydew-google#readme",
+  "dependencies": {
+    "actions-on-google": "^2.3.0",
+    "honeydew-voice": "file:../honeydew-voice",
+    "lambda-warmer": "^1.1.1",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-plugin-import": "^2.14.0",
+    "serverless-stage-manager": "^1.0.5",
+    "serverless-version-tracker": "^1.0.1"
+  }
+}
